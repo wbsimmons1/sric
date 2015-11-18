@@ -14,12 +14,10 @@ def main():
         PORT2 = 8002
         BUFFER_SIZE = 1024
         filename1 = "received"
-        filename2 = "sent"
+        filename2 = "gs.txt"
         answer = 0
         #set up socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sockr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sockr.bind((IPGS,PORT2))
 
         #confirm data with user
         while (answer != "1"):
@@ -32,16 +30,10 @@ def main():
         sock.connect((IPAC,PORT)) #connects
 
         sendjson(jsonobj,sock) #send over json obj
+
+        recfile(sock,filename1) #recieve the file from the aircraft
+        sendfile(sock,filename2)#sends a file to the aircraft
         sock.close()
-        sockr.listen(1)#wait for connection from aircraft
-        conn,address = sockr.accept()
-        print "Connection Address: ", address
-
-        recfile(conn,filename1) #recieve the file from the aircraft
-        sendfile(conn,filename2)#sends a file to the aircraft
-        conn.close()
-
-
 
 #recieve file via socket
 def recfile (conn,filename):
@@ -113,8 +105,5 @@ def sendjson(jsonobj,sock):
         sline = json.dumps(jsonobj).encode('utf8')
         sock.send(sline)
         print "SENT"
-#call main
+
 main()
-
-
-

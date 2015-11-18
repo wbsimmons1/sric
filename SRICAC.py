@@ -27,8 +27,7 @@ def receivefile(filename,sock):
 	rline = sock.recv(1024)
 	while (rline):
 	    print rline
-	    testrec.write(rline)
-	    rline = sock.recv(1024)
+	    testrec.write(rline)it
 	testrec.close()
 	print "Received"
  #wireless  
@@ -79,12 +78,10 @@ def main():
 	IPAC = '192.168.0.2'
 	Port = 9999
 	Port2 = 8002
-	sockr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.bind((IPAC,Port))
 	sock.listen(1) #wait for connection
 	conn,address = sock.accept()
 	data = recjson(conn)
-	sock.close()
 	ssid = data["ssid"]
 	passkey = data["passkey"]
 	addr = data["ftpIP"]
@@ -100,9 +97,9 @@ def main():
 		statusssid = wifi.getEssid()
 	print ("Connected!")
 	file_get(addr,usr, pwd, pth, file_name) #downloads a file to a specified path
-	sockr.connect((IPGS,Port2))
-	sendfile(file_name,sockr)
-	receivefile(upfile_name,sockr)
+	print ("Socket Connected")
+	sendfile(file_name,conn)
+	receivefile(upfile_name,conn)
 	file_send(address,username,password,path,upfile_name)#uploads a file from a specified path
 	
 	print ("SUCCESS")
